@@ -7,8 +7,11 @@ Implementation the Prim-Dijkstra-II algorithmn for Timing-driven Routing Trees i
 
 - Parser of Def/Lef files pro ispd2018 contest working (OK)
 - Graph from parsed files construction (OK)
-- Construction of Mininium Spanning Tree (MST) from Graph (OK)
+- Construction of Minimum Spanning Tree (MST) from Graph (OK)
 - Visualization of resulting MST (OK)
+
+![Working Minimum Spanning Tree](imgs/mst-2025-06-15.png "Working Minimum Spanning Tree")
+
 
 ## TODO
 
