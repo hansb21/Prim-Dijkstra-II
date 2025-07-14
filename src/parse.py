@@ -1,9 +1,8 @@
 from lefdef import C_LefReader, C_DefReader
 
 def parse_design(def_file_path):
-    """Load design data from DEF file"""
     def_reader = C_DefReader()
-    def_data = def_reader.read("ispd18_sample/ispd18_sample.input.def")
+    def_data = def_reader.read(def_file_path)
     
     design = {
         'components': {},

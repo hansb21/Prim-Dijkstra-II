@@ -1,0 +1,117 @@
+VERSION 5.8 ;
+DIVIDERCHAR "/" ;
+BUSBITCHARS "[]" ;
+
+DESIGN example20 ;
+UNITS DISTANCE MICRONS 1000 ;
+
+DIEAREA ( 0 0 ) ( 1000 1000 ) ;
+
+COMPONENTS 20 ;
+- U1 source_cell + PLACED (  80  100 ) N ;
+- U2 sink_cell   + PLACED ( 220  180 ) N ;
+- U3 sink_cell   + PLACED ( 400  120 ) N ;
+- U4 sink_cell   + PLACED ( 600  200 ) N ;
+- U5 sink_cell   + PLACED ( 850  150 ) N ;
+- U6 sink_cell   + PLACED ( 150  400 ) N ;
+- U7 sink_cell   + PLACED ( 350  350 ) N ;
+- U8 sink_cell   + PLACED ( 550  450 ) N ;
+- U9 sink_cell   + PLACED ( 750  400 ) N ;
+- U10 sink_cell  + PLACED ( 900  350 ) N ;
+- U11 sink_cell  + PLACED ( 100  700 ) N ;
+- U12 sink_cell  + PLACED ( 300  650 ) N ;
+- U13 sink_cell  + PLACED ( 480  700 ) N ;
+- U14 sink_cell  + PLACED ( 670  750 ) N ;
+- U15 sink_cell  + PLACED ( 820  800 ) N ;
+- U16 sink_cell  + PLACED ( 200  900 ) N ;
+- U17 sink_cell  + PLACED ( 400  850 ) N ;
+- U18 sink_cell  + PLACED ( 600  880 ) N ;
+- U19 sink_cell  + PLACED ( 780  920 ) N ;
+- U20 sink_cell  + PLACED ( 920  950 ) N ;
+END COMPONENTS
+
+PINS 20 ;
+- a1  + NET net_a1  + DIRECTION INPUT  + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED (  80  100 ) N ;
+- a2  + NET net_a2  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 220  180 ) N ;
+- a3  + NET net_a3  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 400  120 ) N ;
+- a4  + NET net_a4  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 600  200 ) N ;
+- a5  + NET net_a5  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 850  150 ) N ;
+- a6  + NET net_a6  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 150  400 ) N ;
+- a7  + NET net_a7  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 350  350 ) N ;
+- a8  + NET net_a8  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 550  450 ) N ;
+- a9  + NET net_a9  + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 750  400 ) N ;
+- a10 + NET net_a10 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 900  350 ) N ;
+- a11 + NET net_a11 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 100  700 ) N ;
+- a12 + NET net_a12 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 300  650 ) N ;
+- a13 + NET net_a13 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 480  700 ) N ;
+- a14 + NET net_a14 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 670  750 ) N ;
+- a15 + NET net_a15 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 820  800 ) N ;
+- a16 + NET net_a16 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 200  900 ) N ;
+- a17 + NET net_a17 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 400  850 ) N ;
+- a18 + NET net_a18 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 600  880 ) N ;
+- a19 + NET net_a19 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 780  920 ) N ;
+- a20 + NET net_a20 + DIRECTION OUTPUT + USE SIGNAL + PORT + LAYER metal1 ( 0 0 ) ( 0 0 ) + PLACED ( 920  950 ) N ;
+END PINS
+
+NETS 19 ;
+- net_1
+  ( U1 a1 ) ( U2 a2 )
+;
+- net_2
+  ( U2 a2 ) ( U3 a3 )
+;
+- net_3
+  ( U3 a3 ) ( U4 a4 )
+;
+- net_4
+  ( U4 a4 ) ( U5 a5 )
+;
+- net_5
+  ( U2 a2 ) ( U7 a7 )
+;
+- net_6
+  ( U7 a7 ) ( U6 a6 )
+;
+- net_7
+  ( U7 a7 ) ( U8 a8 )
+;
+- net_8
+  ( U8 a8 ) ( U9 a9 )
+;
+- net_9
+  ( U9 a9 ) ( U10 a10 )
+;
+- net_10
+  ( U6 a6 ) ( U11 a11 )
+;
+- net_11
+  ( U11 a11 ) ( U12 a12 )
+;
+- net_12
+  ( U12 a12 ) ( U13 a13 )
+;
+- net_13
+  ( U13 a13 ) ( U14 a14 )
+;
+- net_14
+  ( U14 a14 ) ( U15 a15 )
+;
+- net_15
+  ( U12 a12 ) ( U16 a16 )
+;
+- net_16
+  ( U16 a16 ) ( U17 a17 )
+;
+- net_17
+  ( U17 a17 ) ( U18 a18 )
+;
+- net_18
+  ( U18 a18 ) ( U19 a19 )
+;
+- net_19
+  ( U19 a19 ) ( U20 a20 )
+;
+END NETS
+
+END DESIGN
+

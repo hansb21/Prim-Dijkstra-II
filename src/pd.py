@@ -3,7 +3,7 @@ import mst
 import matplotlib.pyplot as plt
 import heapq
 from itertools import combinations
-
+from collections import defaultdict, deque
 
 def prim(G, source):
     print(G.nodes(data=True))
@@ -117,7 +117,7 @@ def pd(G, alpha, source):
     
     return tree, dist, prev
 
-def candidateEdges(spanning_tree, e, D):
+def candidateEdge(spanning_tree, e, D):
     u, v = e
     candidates = set()
     
@@ -130,15 +130,6 @@ def candidateEdges(spanning_tree, e, D):
                 reachable_nodes.add(node)
         except nx.NetworkXNoPath:
             pass
-    
-    for node in spanning_tree.nodes():
-        try:
-            dist = nx.shortest_path_length(spanning_tree, v, node)
-            if dist <= D:
-                reachable_nodes.add(node)
-        except nx.NetworkXNoPath:
-            pass
-    
     
     for node1 in reachable_nodes:
         for node2 in reachable_nodes:
@@ -153,7 +144,6 @@ def candidateEdges(spanning_tree, e, D):
             candidates.add(candidate_edge)
     
     return candidates
-
 
 
 def get_pl_from_source(G, source):
@@ -208,48 +198,92 @@ def detour_cost(G, source):
     return cost
 
 
+def calculate_manhattan_distance(pos1, pos2):
+    return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+
+
 def flip_cost(G, G_flipped, edge, edge_, alpha, source):
     detour_edge = detour_cost(G, source)
     detour_edge_ = detour_cost(G_flipped, source)
-    len_rem = G[edge[0]][edge[1]]['weight']
-    len_ins = G_flipped[edge_[0]][edge_[1]]['weight']
+
+    len_rem = G[edge[0]][edge[1]].get('weight', 0)
+    len_ins = G_flipped[edge_[0]][edge_[1]].get('weight', 0)
+
     return alpha * (detour_edge_ - detour_edge) + (1 - alpha) * (len_ins - len_rem)
+
+
+def create_flipped_tree(original_tree, old_edge, new_edge):
+    flipped_tree = original_tree.copy()
+    
+    if flipped_tree.has_edge(old_edge[0], old_edge[1]):
+        flipped_tree.remove_edge(old_edge[0], old_edge[1])
+    else:
+        return None
+    
+    components = list(nx.connected_components(flipped_tree))
+    if len(components) != 2:
+        return None
+    
+    comp1, comp2 = components
+    
+    if not ((new_edge[0] in comp1 and new_edge[1] in comp2) or 
+            (new_edge[0] in comp2 and new_edge[1] in comp1)):
+        return None
+    
+    pos1 = original_tree.nodes[new_edge[0]]['pos']
+    pos2 = original_tree.nodes[new_edge[1]]['pos']
+    weight = calculate_manhattan_distance(pos1, pos2)
+    
+    flipped_tree.add_edge(new_edge[0], new_edge[1], weight=weight)
+    
+    if nx.is_connected(flipped_tree) and nx.is_tree(flipped_tree):
+        return flipped_tree
+    else:
+        return None
+  
+
 
 def pd_ii(G, alpha, source, D=1):
     tout = G.copy()
+    # No início da função
+  #  print(f"Árvore inicial - Conectada: {nx.is_connected(tout)}, É árvore: {nx.is_tree(tout)}")
+ #   print(f"Nós: {len(tout.nodes())}, Arestas: {len(tout.edges())}")
     best_detour_cost = -1
     while True:
 
         best_detour_cost = 0
         for edge in tout.edges():
-            candidates = candidateEdges(tout, edge, D=D)
+            candidates = candidateEdge(tout, edge, D)
             for edge_ in candidates:
                 temp_tout = tout.copy()
                 temp_tout.remove_edge(*edge)
-          #  if not (nx.is_connected(temp_tout)):
-                u_pos = tout.nodes[edge_[0]]['pos']
-                v_pos = tout.nodes[edge_[1]]['pos']
-                md = abs(u_pos[0] - v_pos[0]) + abs(u_pos[1] - v_pos[1])
-                print(edge_)
-                print(f"x pos {u_pos}")
-                print(f"y pos {v_pos}")
-                print(f"md: {md}")
-                temp_tout.add_edge(edge_[0], edge_[1], weight=md)
-                if (nx.is_connected(temp_tout) and nx.is_tree(temp_tout)):
-                    print("novo grafo é arvore conectada")
-                    atual_detour_cost = flip_cost(tout, temp_tout, edge, edge_, alpha=alpha, source=source)
-                    print(f" detour cost = {atual_detour_cost}")
-                    
-                    if atual_detour_cost < best_detour_cost:
-                        best_detour_cost = atual_detour_cost
-                   #     edge_best = edge
-                        edge_best_ = edge_
-                        best_flipped_tree = temp_tout.copy()
-            else:
-                print("Continua Conectado")
+                if not (nx.is_connected(temp_tout)):
+                    components = list(nx.connected_components(temp_tout))
+                    comp1, comp2 = components[0], components[1]
+    
+                    if (edge_[0] in comp1 and edge_[1] in comp2) or (edge_[0] in comp2 and edge_[1] in comp1):
+                        u_pos = tout.nodes[edge_[0]]['pos']
+                        v_pos = tout.nodes[edge_[1]]['pos']
+                        md = abs(u_pos[0] - v_pos[0]) + abs(u_pos[1] - v_pos[1])
+                      #  print(edge_)
+                      #  print(f"x pos {u_pos}")
+                      #  print(f"y pos {v_pos}")
+                      #  print(f"md: {md}")
+                        temp_tout.add_edge(edge_[0], edge_[1], weight=md)
+                        if (nx.is_connected(temp_tout) and nx.is_tree(temp_tout)):
+            #                print("novo grafo é arvore conectada")
+                            atual_detour_cost = flip_cost(tout, temp_tout, edge, edge_, alpha=alpha, source=source)
+              #              print(f" detour cost = {atual_detour_cost}")
+                            
+                            if atual_detour_cost < best_detour_cost:
+                                best_detour_cost = atual_detour_cost
+                                best_flipped_tree = temp_tout.copy()
+                    else:
+                        continue
 
         if best_detour_cost < 0:
-            tout = best_flipped_tree.copy()
+            if nx.is_connected(best_flipped_tree) and nx.is_tree(best_flipped_tree):
+                tout = best_flipped_tree.copy()
         else:
             break
 
